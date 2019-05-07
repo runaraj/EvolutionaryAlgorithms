@@ -1,6 +1,6 @@
 
 package geneticalgorithm;
-
+import java.util.Arrays;
 /**
  *
  * @author Marco Virgolin, with the collaboration of Anton Bouter and Hoang Ngoc Luong and the supervision of Peter A.N. Bosman
@@ -20,7 +20,8 @@ public class FitnessFunction {
         this.d = d;
         this.evaluations = 0;
 
-        this.optimum = m * k;   // TODO: this is the optimum for OneMax, not for your function
+        //this.optimum = m * k;   // TODO: this is the optimum for OneMax, not for your function
+        this.optimum = m; // The max is a summation of m elements, where each element is max 1
     }
     
     // The purpose of this custom exception is to perform a naughty trick: halt the GA as soon as the optimum is found
@@ -31,12 +32,20 @@ public class FitnessFunction {
         }
     }
 
+    // This is the f function
     public void Evaluate(Individual individual) throws OptimumFoundCustomException, OptimumFoundCustomException {
 
         evaluations++;
         
         // TODO: You have to implement the correct evaluation function. The following is OneMax (counts 1s). Remember to modify the optimum as well.
         double result = 0;
+
+        // we want to sum f-sub m times
+        for (int i=0; i<m; i++) {
+            //TODO: Runar added this line: is this correct indexes?
+            int[] subgenes = Arrays.copyOfRange(individual.genotype, i*k, i*k+k-1);
+            result += subfunction(subgenes ,k,d);
+        }
 
         for (int i = 0; i < individual.genotype.length; i++) {
             result += individual.genotype[i];
@@ -57,8 +66,16 @@ public class FitnessFunction {
         }
     }
 
+    // This is the f-sub function
+    private Double subfunction(int[] subgenes, int k, double d) {
+        return 0.0;
+    }
+
 
     // This is the u(b) function
+    //TODO: RUNAR - might not need this function
+    // use: Arrays.stream(arr).sum() instead!!
+    // It returns the sum of the array 'arr'
     private Double sumGenotypes() {
         return 0.0;
     }
