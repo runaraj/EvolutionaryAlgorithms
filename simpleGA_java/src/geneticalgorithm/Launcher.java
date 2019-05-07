@@ -13,8 +13,12 @@ import java.nio.file.Files;
 public class Launcher {
 
     public static void main(String[] args) throws IOException {
-
+        //System.out.println(args[0]);
         // termination condition parameters ( 0 or negatives are ignored )
+        int m = Integer.parseInt(args[0]);
+        int k = Integer.parseInt(args[1]);
+        double d = Double.parseDouble(args[2]);
+
         long time_limit = 3 * 1000; // in milliseconds
         int generations_limit = -1;
         long evaluations_limit = -1;
@@ -25,9 +29,12 @@ public class Launcher {
         }
 
         // TODO: this runs one experiment, you may want to script a pipeline here.
+
         int population_size = 100;
-        int m = 8; int k = 5; double d = 1.0;
+
+        //int m = 8; int k = 5; double d = 1.0;
         CrossoverType ct = CrossoverType.Uniform;
+
         int i = 0;
         // Set up logging
         String output_file_name = "experiments/log_p" + population_size + "_m" + m + "_k" + k + "_d" + d + "_c" + ct + "_run" + i + ".txt";
