@@ -1,0 +1,6 @@
+simpleGA_java/build/*
+*.idea/
+*.project
+*.iml
+*.classpath
+

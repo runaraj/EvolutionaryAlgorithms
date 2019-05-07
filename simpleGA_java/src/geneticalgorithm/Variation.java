@@ -35,9 +35,26 @@ public class Variation {
         Individual child1 = parent1.Clone(); // explicit call to clone because otherwise Java copies the reference
         Individual child2 = parent2.Clone();
         
-        // TODO: This crossover is not doing anything. You must implement it.
-        // Remember to use the rng in Utilities to sample random numbers, e.g., Utilities.rng.nextDouble();
-        
+
+        //perform crossover
+        for(int i = 0; i < parent1.genotype.length; i++){
+            //select random bit from either parent 1 or parent 2
+            int val1 = Utilities.rng.nextDouble() < 0.5 ? 0 : 1;
+            int val2 = Utilities.rng.nextDouble() < 0.5 ? 0 : 1;
+            if (val1 == 0){
+                child1.genotype[i]=parent1.genotype[i];
+            }
+            if (val1 == 1){
+                child1.genotype[i]=parent2.genotype[i];
+            }
+            if (val2 == 0){
+                child2.genotype[i]=parent1.genotype[i];
+            }
+            if (val2 == 1){
+                child2.genotype[i]=parent2.genotype[i];
+            }
+        }
+
         ArrayList<Individual> result = new ArrayList<Individual>();
         result.add(child1);
         result.add(child2);
@@ -50,10 +67,28 @@ public class Variation {
         Individual child1 = parent1.Clone();
         Individual child2 = parent2.Clone();
 
-        // TODO: This crossover is not doing anything. You must implement it.
-        // Remember to use the rng in Utilities to sample random numbers, e.g., Utilities.rng.nextDouble();
+        // select point to do crossover with.
+        int crossoverPoint1 = Utilities.rng.nextInt(parent1.genotype.length);
+        int crossoverPoint2 = Utilities.rng.nextInt(parent1.genotype.length);
 
+
+
+
+        // do crossover
+        for(int i = 0; i < parent1.genotype.length; i++){
+            if(i < crossoverPoint1){
+                child1.genotype[i] = parent1.genotype[i];
+            }else if (i > crossoverPoint1){
+                child1.genotype[i] = parent2.genotype[i];
+            }if (i < crossoverPoint2){
+                child2.genotype[i] = parent1.genotype[i];
+            }else if (i > crossoverPoint2){
+                child2.genotype[i] = parent2.genotype[i];
+
+            }
+        }
         ArrayList<Individual> result = new ArrayList<Individual>();
+
         result.add(child1);
         result.add(child2);
 
