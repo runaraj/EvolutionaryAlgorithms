@@ -37,8 +37,7 @@ public class FitnessFunction {
 
         evaluations++;
         
-        // TODO: You have to implement the correct evaluation function. The following is OneMax (counts 1s). Remember to modify the optimum as well.
-        double result = 0;
+        double result = 0.0;
 
         // we want to sum f-sub m times
         for (int i=0; i<m; i++) {
@@ -71,7 +70,7 @@ public class FitnessFunction {
         // genesum: The u(b) function
         double genesum = Arrays.stream(subgenes).sum();
         if (genesum == k) {
-            return 1;
+            return 1.0;
         }
         return (1-d)*((k-1-genesum)/(k-1));
     }

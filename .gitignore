@@ -3,4 +3,5 @@ simpleGA_java/build/*
 *.project
 *.iml
 *.classpath
+*/build/
 
