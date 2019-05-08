@@ -1,4 +1,4 @@
-simpleGA_java/build/*
+Practical1/simpleGA_java/build/*
 *.idea/
 *.project
 *.iml
