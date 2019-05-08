@@ -19,9 +19,9 @@ public class FitnessFunction {
         this.k = k;
         this.d = d;
         this.evaluations = 0;
-
-        //this.optimum = m * k;   // TODO: this is the optimum for OneMax, not for your function
-        this.optimum = m; // The max is a summation of m elements, where each element is max 1
+        
+        //this.optimum = m * k;   // This is the optimum for OneMax, not for your function
+        this.optimum = m; // The optimum is a summation of m elements, where each element is max 1
     }
     
     // The purpose of this custom exception is to perform a naughty trick: halt the GA as soon as the optimum is found
@@ -42,14 +42,13 @@ public class FitnessFunction {
 
         // we want to sum f-sub m times
         for (int i=0; i<m; i++) {
-            //TODO: Runar added this line: is this correct indexes?
-            int[] subgenes = Arrays.copyOfRange(individual.genotype, i*k, i*k+k-1);
+            int[] subgenes = Arrays.copyOfRange(individual.genotype, i*k, (i*k)+k-1);
             result += subfunction(subgenes ,k,d);
         }
 
-        for (int i = 0; i < individual.genotype.length; i++) {
+        /*for (int i = 0; i < individual.genotype.length; i++) {
             result += individual.genotype[i];
-        }
+        }*/
 
         // set the fitness of the individual
         individual.fitness = result;
@@ -68,17 +67,16 @@ public class FitnessFunction {
 
     // This is the f-sub function
     private Double subfunction(int[] subgenes, int k, double d) {
-        return 0.0;
+
+        // genesum: The u(b) function
+        double genesum = Arrays.stream(subgenes).sum();
+        if (genesum == k) {
+            return 1;
+        }
+        return (1-d)*((k-1-genesum)/(k-1));
     }
 
 
-    // This is the u(b) function
-    //TODO: RUNAR - might not need this function
-    // use: Arrays.stream(arr).sum() instead!!
-    // It returns the sum of the array 'arr'
-    private Double sumGenotypes() {
-        return 0.0;
-    }
 
     
 
