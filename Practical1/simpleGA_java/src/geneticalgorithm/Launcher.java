@@ -18,6 +18,14 @@ public class Launcher {
         int m = Integer.parseInt(args[0]);
         int k = Integer.parseInt(args[1]);
         double d = Double.parseDouble(args[2]);
+        String type = args[3];
+
+        CrossoverType ct;
+        if (type.equals("Uniform")){
+            ct = CrossoverType.Uniform;
+        }else{
+            ct = CrossoverType.OnePoint;
+        }
 
         long time_limit = 3 * 1000; // in milliseconds
         int generations_limit = -1;
@@ -33,7 +41,6 @@ public class Launcher {
         int population_size = 100;
 
         //int m = 8; int k = 5; double d = 1.0;
-        CrossoverType ct = CrossoverType.Uniform;
 
         int i = 0;
         // Set up logging
