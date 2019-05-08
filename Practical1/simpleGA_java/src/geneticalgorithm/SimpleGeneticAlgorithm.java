@@ -80,6 +80,12 @@ public class SimpleGeneticAlgorithm {
             p_and_o.addAll(offspring);
             // L3.6 (and follownig): selection
             population = selection.TournamentSelect(p_and_o);
+
+            /*for (int i = 0; i < population.size();i++) {
+                System.out.println(population.get(i).toString());
+            }*/
+
+
             // L3.8: increment generation counter
             generation += 1;
             

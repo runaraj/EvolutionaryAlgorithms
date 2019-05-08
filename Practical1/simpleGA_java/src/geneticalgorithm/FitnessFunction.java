@@ -43,7 +43,7 @@ public class FitnessFunction {
 
         // we want to sum f-sub m times
         for (int i=0; i<m; i++) {
-            int[] subgenes = Arrays.copyOfRange(individual.genotype, i*k, (i*k)+k-1);
+            int[] subgenes = Arrays.copyOfRange(individual.genotype, i*k, (i*k)+k);
             result += subfunction(subgenes,k,d);
         }
         
@@ -60,9 +60,10 @@ public class FitnessFunction {
             result += individual.genotype[i];
         }*/
 
-        System.out.println(result);
+        //System.out.println(result);
         // set the fitness of the individual
         individual.fitness = result;
+        //System.out.println(individual + " has fitness value: " + individual.fitness);
 
         // update elite
         if (elite == null || elite.fitness < individual.fitness) {
@@ -81,10 +82,10 @@ public class FitnessFunction {
 
         // genesum: The u(b) function
         double genesum = Arrays.stream(subgenes).sum();
-        if (genesum == k) {
+        if (genesum == Double.valueOf(k)) {
             return 1.0;
         }
-        return (1-d)*((k-1-genesum)/(k-1));
+        return (1-d)*((Double.valueOf(k)-1-genesum)/(Double.valueOf(k)-1));
     }
 
 
