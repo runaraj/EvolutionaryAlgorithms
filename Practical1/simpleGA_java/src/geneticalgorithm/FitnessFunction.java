@@ -60,8 +60,6 @@ public class FitnessFunction {
         //System.out.println("Individual fitness" + result);
         // set the fitness of the individual
         individual.fitness = result;
-        System.out.println(individual + " has fitness value: " + individual.fitness);
-
         // update elite
         if (elite == null || elite.fitness < individual.fitness) {
             elite = individual.Clone();
