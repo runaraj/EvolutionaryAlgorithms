@@ -46,24 +46,21 @@ public class FitnessFunction {
             int[] subgenes = Arrays.copyOfRange(individual.genotype, i*k, (i*k)+k);
             result += subfunction(subgenes,k,d);
         }
-        
+
         /*System.out.print("Individual: ");
         for (int j = 0; j < individual.genotype.length; j++) {
             System.out.print(individual.genotype[j]+ " ");
         }
-        System.out.println();
-        System.out.println(result);
-        System.out.println();*/
 
 
         /*for (int i = 0; i < individual.genotype.length; i++) {
             result += individual.genotype[i];
         }*/
 
-        //System.out.println(result);
+        //System.out.println("Individual fitness" + result);
         // set the fitness of the individual
         individual.fitness = result;
-        //System.out.println(individual + " has fitness value: " + individual.fitness);
+        System.out.println(individual + " has fitness value: " + individual.fitness);
 
         // update elite
         if (elite == null || elite.fitness < individual.fitness) {
