@@ -1,0 +1,2 @@
+gen evals time best_fitness
+0 59 35 29.0
