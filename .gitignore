@@ -1,7 +1,9 @@
 Practical1/simpleGA_java/build/*
+Practical1/simpleGA_java/out/*
 *.idea/
 *.project
 *.iml
 *.classpath
 */build/
+
 
