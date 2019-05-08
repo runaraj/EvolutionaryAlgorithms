@@ -1,6 +1,7 @@
 
 package geneticalgorithm;
 import java.util.Arrays;
+
 /**
  *
  * @author Marco Virgolin, with the collaboration of Anton Bouter and Hoang Ngoc Luong and the supervision of Peter A.N. Bosman
@@ -38,17 +39,28 @@ public class FitnessFunction {
         evaluations++;
         
         double result = 0.0;
+        
 
         // we want to sum f-sub m times
         for (int i=0; i<m; i++) {
             int[] subgenes = Arrays.copyOfRange(individual.genotype, i*k, (i*k)+k-1);
-            result += subfunction(subgenes ,k,d);
+            result += subfunction(subgenes,k,d);
         }
+        
+        /*System.out.print("Individual: ");
+        for (int j = 0; j < individual.genotype.length; j++) {
+            System.out.print(individual.genotype[j]+ " ");
+        }
+        System.out.println();
+        System.out.println(result);
+        System.out.println();*/
+
 
         /*for (int i = 0; i < individual.genotype.length; i++) {
             result += individual.genotype[i];
         }*/
 
+        System.out.println(result);
         // set the fitness of the individual
         individual.fitness = result;
 
