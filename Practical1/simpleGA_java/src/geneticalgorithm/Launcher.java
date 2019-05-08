@@ -18,7 +18,8 @@ public class Launcher {
         int m = Integer.parseInt(args[0]);
         int k = Integer.parseInt(args[1]);
         double d = Double.parseDouble(args[2]);
-        String type = args[3];
+        int population_size = Integer.parseInt(args[3]);
+        String type = args[4];
 
         CrossoverType ct;
         if (type.equals("Uniform")){
@@ -39,7 +40,6 @@ public class Launcher {
 
         // TODO: this runs one experiment, you may want to script a pipeline here.
 
-        int population_size = 100;
 
         //int m = 8; int k = 5; double d = 1.0;
 
