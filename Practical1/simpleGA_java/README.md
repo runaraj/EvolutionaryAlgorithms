@@ -9,6 +9,8 @@ Netbeans will automatically recognize the folder as a Java project.
 To compile manually, execute `make` from your terminal (works on both Linux and Windows).
 To run manually execute `./run.sh` if using Linux, or `run` if using Windows.
 
+To run a script `scriptname.sh` use the command `sed -i 's/\r$//' ./scripts/scriptname.sh & ./scripts/scriptname.sh`
+
 ## How are the folders organized?
 All `.java` source code files are in `src/geneticalgorithm`. All compiled classes will end up in `build/classes/geneticalgorithm`.
 When the code is run, a folder `experiments` will be created, where useful information will be logged.
@@ -17,3 +19,4 @@ When the code is run, a folder `experiments` will be created, where useful infor
 * `Launcher.java` contains the main. You can use the main to script your pipeline of experiments.
 * In `FitnessFunction.java`, the current evaluation function is *OneMax*. You must change it as described in the assignment.
 * Uniform and one-point crossover must be implemented in `Variation.java`.
+
