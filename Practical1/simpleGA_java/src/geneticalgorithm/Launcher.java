@@ -30,7 +30,7 @@ public class Launcher {
         }
 
 
-        long time_limit = 3 * 1000; // in milliseconds
+        long time_limit = 3 * 20; // in milliseconds
         int generations_limit = -1;
         long evaluations_limit = -1;
 
@@ -46,6 +46,7 @@ public class Launcher {
 
         for (int i = 0; i< numberOfRuns; i++){
             // Set up logging
+            Utilities.rng.setSeed(42424242+i);
             String output_file_name = "experiments/log_p" + population_size + "_m" + m + "_k" + k + "_d" + d + "_c" + ct + "_run" + i + ".txt";
             Files.deleteIfExists(new File(output_file_name).toPath());
             Utilities.logger = new BufferedWriter(new FileWriter(output_file_name, true));
