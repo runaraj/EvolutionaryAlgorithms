@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.Buffer;
 import java.nio.file.Files;
 
 /**
@@ -33,11 +34,15 @@ public class Launcher {
         long time_limit = 3 * 20; // in milliseconds
         int generations_limit = -1;
         long evaluations_limit = -1;
-
         File directory = new File("experiments");
         if (!directory.exists()) {
             directory.mkdir();
         }
+
+        //init new file names
+        String gotStuck = "experiments/gotStuck.txt";
+        String foundGlobalOptimum = "experiments/foundGlobalOptimum.txt";
+
 
         // TODO: this runs one experiment, you may want to script a pipeline here.
 
@@ -61,14 +66,29 @@ public class Launcher {
                 System.out.println("Best fitness " + ga.fitness_function.elite.fitness + " found at\n"
                         + "generation\t" + ga.generation + "\nevaluations\t" + ga.fitness_function.evaluations + "\ntime (ms)\t" + (System.currentTimeMillis() - ga.start_time + "\n")
                         + "elite\t\t" + ga.fitness_function.elite.toString());
+                Utilities.logger.write("\n");
+
+
+                Utilities.logger.close();
+                //writes all files that got stuck
+
+                BufferedWriter logger3 = new BufferedWriter(new FileWriter(gotStuck,true));
+                logger3.write("log_p" + population_size + "_m" + m + "_k" + k + "_d" + d + "_c" + ct + "_run" + i + ".txt"+"\n");
+                logger3.close();
 
             } catch (FitnessFunction.OptimumFoundCustomException ex) {
                 System.out.println("Optimum " + ga.fitness_function.elite.fitness + " found at\n"
                         + "generation\t" + ga.generation + "\nevaluations\t" + ga.fitness_function.evaluations + "\ntime (ms)\t" + (System.currentTimeMillis() - ga.start_time + "\n")
                         + "elite\t\t" + ga.fitness_function.elite.toString());
                 Utilities.logger.write(ga.generation + " " + ga.fitness_function.evaluations + " " + (System.currentTimeMillis() - ga.start_time) + " " + ga.fitness_function.elite.fitness + "\n");
+
+
+                Utilities.logger.close();
+                //writes all files with parameters that found global optimum
+                BufferedWriter logger2 = new BufferedWriter(new FileWriter(foundGlobalOptimum,true));
+                logger2.write("log_p" + population_size + "_m" + m + "_k" + k + "_d" + d + "_c" + ct + "_run" + i + ".txt" +"\n");
+                logger2.close();
             }
-            Utilities.logger.close();
         }
 
 
