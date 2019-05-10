@@ -6,5 +6,4 @@ Practical1/simpleGA_java/experiments/*
 *.iml
 *.classpath
 */build/
-
-
+*.vscode
