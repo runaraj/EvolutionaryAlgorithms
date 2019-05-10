@@ -25,8 +25,14 @@ public class DataAggregator {
     List<String> files = new ArrayList<>(Arrays.asList(gotStuck, foundGlobalOptimum));
 
     public void aggregateM() {
-        //int[] = [#gotStuck, #foundGlobal]
-        Map<String, int[]> solutionCounts = new HashMap<>();
+        int stuckCount = 0;
+        int foundGlobalCount = 0;
+        int evaluationsTotal = 0;
+        int generationsTotal = 0;
+        
+        
+        //int[] = [stuckCount, foundGlobalCount, evalTotal, genTotal]
+        Map<Integer, int[]> counters = new HashMap<>();
 
 
         BufferedReader reader;
@@ -86,6 +92,13 @@ public class DataAggregator {
     }
     
     public void aggregateType() {
+        
+    }
+
+    public void readGotStuck() {
+
+    }
+    public void readFoundGlobalOptimum() {
         
     }
     public static void main(String[] args) throws IOException {
