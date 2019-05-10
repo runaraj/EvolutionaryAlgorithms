@@ -1,0 +1,42 @@
+plot1:
+d is set to 0.2
+y-axis: number of evaluations
+x-axis: m values. For each value of m (1,2,4,8,16) plot the value for each run + the avg
+			the averages are the main point->connected by lines
+
+
+plot2:
+same as plot1 but d=0.8
+
+
+plot3:
+d=0.2
+gets average from using all m values
+y = #evaluations
+x = populationSize
+
+plot4:
+same as plot3 but d=0.8
+
+
+plot5/6 etc?
+y=evals
+x=population
+set m to only 1 value.
+
+
+plot 7: as table
+y = number of optimals found
+x = pop size / 
+
+
+in each graph:
+	one plot for OnePoint crossover
+	one plot for uniform crossover
+ 
+
+use tables for std.
+
+
+!!!! in all plots: when using #evaluations, this is the number of evaluations when finding
+	the optimal solution. All 1s.
