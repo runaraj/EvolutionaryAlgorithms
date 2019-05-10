@@ -88,7 +88,7 @@ public class Launcher {
                 Utilities.logger.close();
                 //writes all files with parameters that found global optimum
                 BufferedWriter logger2 = new BufferedWriter(new FileWriter(foundGlobalOptimum,true));
-                logger2.write("log_p" + population_size + "_m" + m + "_k" + k + "_d" + d + "_c" + ct + "_run" + i + ".txt" +"\n");
+                logger2.write("log_p" + population_size + "_m" + m + "_k" + k + "_d" + d + "_c" + ct + "_run" + i + ".txt-" + ga.fitness_function.evaluations + ":" +ga.generation +"\n");
                 logger2.close();
             }
         }
