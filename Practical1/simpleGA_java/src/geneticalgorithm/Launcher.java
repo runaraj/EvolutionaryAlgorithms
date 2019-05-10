@@ -31,7 +31,7 @@ public class Launcher {
         }
 
 
-        long time_limit = 3 * 100; // in milliseconds
+        long time_limit = 3 * 1000; // in milliseconds
         //TODO: add extra stop condition to avoid time outs => set generations_limit and evaluations_limit
         int generations_limit = -1;
         long evaluations_limit = -1;
