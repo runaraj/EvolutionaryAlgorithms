@@ -17,16 +17,14 @@ import java.util.Map;
 
 public class DataAggregator {
 
-    public static void main(String[] args) throws IOException {
+    File directory = new File("experiments");
 
-        File directory = new File("experiments");
+    //init new file names
+    String gotStuck = "experiments/gotStuck.txt";
+    String foundGlobalOptimum = "experiments/foundGlobalOptimum.txt";
+    List<String> files = new ArrayList<>(Arrays.asList(gotStuck, foundGlobalOptimum));
 
-        //init new file names
-        String gotStuck = "experiments/gotStuck.txt";
-        String foundGlobalOptimum = "experiments/foundGlobalOptimum.txt";
-
-        List<String> files = new ArrayList<>(Arrays.asList(gotStuck, foundGlobalOptimum));
-
+    public void aggregateM() {
         //int[] = [#gotStuck, #foundGlobal]
         Map<String, int[]> solutionCounts = new HashMap<>();
 
@@ -46,7 +44,7 @@ public class DataAggregator {
 
                     int[] count = {0,0};
 
-                    if (f.equals(gotStuck)) {
+                    if (f.equals(this.gotStuck)) {
                         count[0] = 1;
                     } else {
                         count[1] = 1;
@@ -75,6 +73,26 @@ public class DataAggregator {
             System.out.println();
         }
 
+
+    }
+
+    public void aggregateD() {
+
+    }
+
+    
+    public void aggregatePop() {
+        
+    }
+    
+    public void aggregateType() {
+        
+    }
+    public static void main(String[] args) throws IOException {
+
+
+
+        
     }
     
 }
