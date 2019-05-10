@@ -31,8 +31,9 @@ public class Launcher {
         }
 
 
-        long time_limit = 3 * 20; // in milliseconds
-        int generations_limit = -1;
+        long time_limit = 3 * 100; // in milliseconds
+        //TODO: add extra stop condition to avoid time outs => set generations_limit and evaluations_limit
+        int generations_limit = 150;
         long evaluations_limit = -1;
         File directory = new File("experiments");
         if (!directory.exists()) {
@@ -48,6 +49,7 @@ public class Launcher {
 
 
         //int m = 8; int k = 5; double d = 1.0;
+
 
         for (int i = 0; i< numberOfRuns; i++){
             // Set up logging

@@ -3,6 +3,7 @@ package geneticalgorithm;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -94,6 +95,8 @@ public class SimpleGeneticAlgorithm {
         }
     }
 
+    private int[] prevElite = {1};
+
     private boolean CheckTerminationCondition(int generation_limit, long evaluations_limit, long time_limit) {
 
         if (generation_limit > 0 && generation >= generation_limit) {
@@ -105,6 +108,12 @@ public class SimpleGeneticAlgorithm {
         long elapsed_time = System.currentTimeMillis() - start_time;
         if (time_limit > 0 && elapsed_time >= time_limit) {
             return true;
+        }
+        // If the elite is all 0 two times in a row we are stuck
+        if (Arrays.stream(prevElite).sum() == 0){
+            return true;
+        } else {
+            prevElite = fitness_function.elite.genotype;
         }
         return false;
     }
