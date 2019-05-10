@@ -59,8 +59,6 @@ public class SimpleGeneticAlgorithm {
                 System.out.print(fitness_function.elite.genotype[j]+ " ");
             }
             System.out.println();*/
-
-
             
             // L3.1: Prepare offspring
             ArrayList<Individual> offspring = new ArrayList<>();
@@ -95,7 +93,6 @@ public class SimpleGeneticAlgorithm {
         }
     }
 
-    private int[] prevElite = {1};
 
     private boolean CheckTerminationCondition(int generation_limit, long evaluations_limit, long time_limit) {
 
@@ -108,12 +105,6 @@ public class SimpleGeneticAlgorithm {
         long elapsed_time = System.currentTimeMillis() - start_time;
         if (time_limit > 0 && elapsed_time >= time_limit) {
             return true;
-        }
-        // If the elite is all 0 two times in a row we are stuck
-        if (Arrays.stream(prevElite).sum() == 0){
-            return true;
-        } else {
-            prevElite = fitness_function.elite.genotype;
         }
         return false;
     }
