@@ -11,8 +11,10 @@ import java.nio.file.Files;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
 
 
 public class DataAggregator {
@@ -27,59 +29,83 @@ public class DataAggregator {
     public void aggregateM() {
         int stuckCount = 0;
         int foundGlobalCount = 0;
-        int evaluationsTotal = 0;
-        int generationsTotal = 0;
+        List<Integer> evaluations = new ArrayList<>();
+        List<Integer> generations = new ArrayList<>();
+
+        int[] mValues = {1,2,4,8,16};
         
-        
+        // Key = value of m
         //int[] = [stuckCount, foundGlobalCount, evalTotal, genTotal]
         Map<Integer, int[]> counters = new HashMap<>();
 
-
-        BufferedReader reader;
-        for (String f : files) {
+        for (Integer m : mValues) {
+            BufferedReader reader;
             try {
-                reader = new BufferedReader(new FileReader(f));
+                reader = new BufferedReader(new FileReader(foundGlobalOptimum));
                 String line = reader.readLine();
                 while (line != null) {
-                    String[] variableConfig = line.split("_");
-                    String pop = variableConfig[1];
-                    String m = variableConfig[2];
-                    String k = variableConfig[3];
-                    String d = variableConfig[4];
-                    String type = variableConfig[5];
+                    String[] linesplit = line.split("_");
+                    int mVal = Integer.valueOf(linesplit[2].substring(1));
 
-                    int[] count = {0,0};
+                    if (m == mVal) {
+                        String[] evalGen = linesplit[6].split("-")[1].split(":");
+                        int numEvals = Integer.valueOf(evalGen[0]);
+                        int numGens = Integer.valueOf(evalGen[1]);
+                        foundGlobalCount ++;
+                        // evaluationsTotal += numEvals;
+                        evaluations.add(numEvals);
+                        // generationsTotal += numGens;
+                        generations.add(numGens);
+                    }
 
-                    if (f.equals(this.gotStuck)) {
-                        count[0] = 1;
-                    } else {
-                        count[1] = 1;
-                    }
-                    
-                    String solutionsCountKey = pop+m+k+d+type;
-                    if (solutionCounts.containsKey(solutionsCountKey)){
-                        solutionCounts.get(solutionsCountKey)[0] += count[0];
-                        solutionCounts.get(solutionsCountKey)[1] += count[1];
-                        // int[] res = add(solutionCounts.get(solutionsCountKey), count);
-                        // solutionCounts.replace(solutionsCountKey, res);
-                    } else {
-                        solutionCounts.put(solutionsCountKey, count);
-                    }
-    
+
                     line = reader.readLine();
                 }
+                
                 reader.close();
             } catch (Exception e) {
-                e.printStackTrace();
+                
             }
+            try {
+                reader = new BufferedReader(new FileReader(gotStuck));
+                String line = reader.readLine();
+                while (line != null) {
+                    String[] linesplit = line.split("_");
+                    int mVal = Integer.valueOf(linesplit[2].substring(1));
+
+                    if (m == mVal) {
+                        stuckCount ++;
+                    }
+                    line = reader.readLine();
+                }
+                
+                reader.close();
+            } catch (Exception e) {
+                
+            }
+            int evaluationsAvg = 0;
+            int generationAvg = 0;
+            if (foundGlobalCount> 0) {
+                evaluationsAvg = evaluations.stream().mapToInt(a->a).sum()/foundGlobalCount;
+                generationAvg = generations.stream().mapToInt(a->a).sum()/foundGlobalCount;
+            }
+
+            int[] aggregate = {stuckCount, foundGlobalCount, evaluationsAvg, generationAvg};
+            counters.put(m, aggregate);
+            stuckCount = 0;
+            foundGlobalCount = 0;
+            evaluations.clear();
+            generations.clear();
         }
-        for (String key : solutionCounts.keySet()) {
-            System.out.println("Key: " + key);
-            System.out.println(solutionCounts.get(key)[0] + " " + solutionCounts.get(key)[1]);
+
+        System.out.println("Stuck count, Global count, eval avg, gen. avg");
+        for (Integer key : counters.keySet()) {
+            System.out.println("M value: " + key);
+            for (int i = 0; i < 4; i++) {
+                System.out.print(counters.get(key)[i] + " ");
+            }
             System.out.println();
         }
-
-
     }
 
     public void aggregateD() {
@@ -88,22 +114,175 @@ public class DataAggregator {
 
     
     public void aggregatePop() {
+        int stuckCount = 0;
+        int foundGlobalCount = 0;
+        List<Integer> evaluations = new ArrayList<>();
+        List<Integer> generations = new ArrayList<>();
+
+        // int[] popValues = {50, 100, 200, 300, 400, 500};
+        int[] popValues = {50, 100, 200, 300, 400, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000};
+        
+        // Key = value of m
+        //int[] = [stuckCount, foundGlobalCount, evalTotal, genTotal]
+        Map<Integer, int[]> counters = new HashMap<>();
+
+        for (Integer p : popValues) {
+            BufferedReader reader;
+            try {
+                reader = new BufferedReader(new FileReader(foundGlobalOptimum));
+                String line = reader.readLine();
+                while (line != null) {
+                    String[] linesplit = line.split("_");
+                    int pVal = Integer.valueOf(linesplit[1].substring(1));
+
+                    if (p == pVal) {
+                        String[] evalGen = linesplit[6].split("-")[1].split(":");
+                        int numEvals = Integer.valueOf(evalGen[0]);
+                        int numGens = Integer.valueOf(evalGen[1]);
+                        foundGlobalCount ++;
+                        evaluations.add(numEvals);
+                        // generationsTotal += numGens;
+                        generations.add(numGens);
+                    }
+
+
+                    line = reader.readLine();
+                }
+                
+                reader.close();
+            } catch (Exception e) {
+                
+            }
+            try {
+                reader = new BufferedReader(new FileReader(gotStuck));
+                String line = reader.readLine();
+                while (line != null) {
+                    String[] linesplit = line.split("_");
+                    int pVal = Integer.valueOf(linesplit[1].substring(1));
+
+                    if (p == pVal) {
+                        stuckCount ++;
+                    }
+                    line = reader.readLine();
+                }
+                
+                reader.close();
+            } catch (Exception e) {
+                
+            }
+            int evaluationsAvg = 0;
+            int generationAvg = 0;
+            if (foundGlobalCount> 0) {
+                evaluationsAvg = evaluations.stream().mapToInt(a->a).sum()/foundGlobalCount;
+                generationAvg = generations.stream().mapToInt(a->a).sum()/foundGlobalCount;
+                
+            }
+
+            int[] aggregate = {stuckCount, foundGlobalCount, evaluationsAvg, generationAvg};
+            counters.put(p, aggregate);
+            stuckCount = 0;
+            foundGlobalCount = 0;
+        }
+
+        System.out.println("Stuck count, Global count, eval avg, gen. avg");
+        for (Integer key : counters.keySet()) {
+            System.out.println("P value: " + key);
+            for (int i = 0; i < 4; i++) {
+                System.out.print(counters.get(key)[i] + " ");
+            }
+            System.out.println();
+        }
         
     }
     
     public void aggregateType() {
+
+        int stuckCount = 0;
+        int foundGlobalCount = 0;
+        List<Integer> evaluations = new ArrayList<>();
+        List<Integer> generations = new ArrayList<>();
+
+        // int[] popValues = {50, 100, 200, 300, 400, 500};
+        String[] typeValues = {"Uniform",  "OnePoint"};
         
-    }
+        // Key = value of m
+        //int[] = [stuckCount, foundGlobalCount, evalTotal, genTotal]
+        Map<String, int[]> counters = new HashMap<>();
 
-    public void readGotStuck() {
+        for (String t : typeValues) {
+            BufferedReader reader;
+            try {
+                reader = new BufferedReader(new FileReader(foundGlobalOptimum));
+                String line = reader.readLine();
+                while (line != null) {
+                    String[] linesplit = line.split("_");
+                    String tVal = linesplit[5].substring(1);
 
-    }
-    public void readFoundGlobalOptimum() {
+                    if (t.equals(tVal)) {
+                        String[] evalGen = linesplit[6].split("-")[1].split(":");
+                        int numEvals = Integer.valueOf(evalGen[0]);
+                        int numGens = Integer.valueOf(evalGen[1]);
+                        foundGlobalCount ++;
+                        evaluations.add(numEvals);
+                        // generationsTotal += numGens;
+                        generations.add(numGens);
+                    }
+
+
+                    line = reader.readLine();
+                }
+                
+                reader.close();
+            } catch (Exception e) {
+                
+            }
+            try {
+                reader = new BufferedReader(new FileReader(gotStuck));
+                String line = reader.readLine();
+                while (line != null) {
+                    String[] linesplit = line.split("_");
+                    String tVal = linesplit[5].substring(1);
+
+                    if (t.equals(tVal)) {
+                        stuckCount ++;
+                    }
+                    line = reader.readLine();
+                }
+                
+                reader.close();
+            } catch (Exception e) {
+                
+            }
+            int evaluationsAvg = 0;
+            int generationAvg = 0;
+            if (foundGlobalCount> 0) {
+                evaluationsAvg = evaluations.stream().mapToInt(a->a).sum()/foundGlobalCount;
+                generationAvg = generations.stream().mapToInt(a->a).sum()/foundGlobalCount;
+                
+            }
+
+            int[] aggregate = {stuckCount, foundGlobalCount, evaluationsAvg, generationAvg};
+            counters.put(t, aggregate);
+            stuckCount = 0;
+            foundGlobalCount = 0;
+        }
+
+        System.out.println("Stuck count, Global count, eval avg, gen. avg");
+        for (String key : counters.keySet()) {
+            System.out.println("Type value: " + key);
+            for (int i = 0; i < 4; i++) {
+                System.out.print(counters.get(key)[i] + " ");
+            }
+            System.out.println();
+        }
         
     }
     public static void main(String[] args) throws IOException {
 
-
+        DataAggregator agg = new DataAggregator();
+        agg.aggregateM();
+        agg.aggregatePop();
+        agg.aggregateType();
 
         
     }
