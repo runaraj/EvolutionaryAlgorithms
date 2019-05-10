@@ -65,9 +65,9 @@ public class Launcher {
             try {
                 ga.run(generations_limit, evaluations_limit, time_limit);
 
-                System.out.println("Best fitness " + ga.fitness_function.elite.fitness + " found at\n"
-                        + "generation\t" + ga.generation + "\nevaluations\t" + ga.fitness_function.evaluations + "\ntime (ms)\t" + (System.currentTimeMillis() - ga.start_time + "\n")
-                        + "elite\t\t" + ga.fitness_function.elite.toString());
+                // System.out.println("Best fitness " + ga.fitness_function.elite.fitness + " found at\n"
+                        // + "generation\t" + ga.generation + "\nevaluations\t" + ga.fitness_function.evaluations + "\ntime (ms)\t" + (System.currentTimeMillis() - ga.start_time + "\n")
+                        // + "elite\t\t" + ga.fitness_function.elite.toString());
                 Utilities.logger.write("\n");
 
 
@@ -79,9 +79,9 @@ public class Launcher {
                 logger3.close();
 
             } catch (FitnessFunction.OptimumFoundCustomException ex) {
-                System.out.println("Optimum " + ga.fitness_function.elite.fitness + " found at\n"
-                        + "generation\t" + ga.generation + "\nevaluations\t" + ga.fitness_function.evaluations + "\ntime (ms)\t" + (System.currentTimeMillis() - ga.start_time + "\n")
-                        + "elite\t\t" + ga.fitness_function.elite.toString());
+                // System.out.println("Optimum " + ga.fitness_function.elite.fitness + " found at\n"
+                        // + "generation\t" + ga.generation + "\nevaluations\t" + ga.fitness_function.evaluations + "\ntime (ms)\t" + (System.currentTimeMillis() - ga.start_time + "\n")
+                        // + "elite\t\t" + ga.fitness_function.elite.toString());
                 Utilities.logger.write(ga.generation + " " + ga.fitness_function.evaluations + " " + (System.currentTimeMillis() - ga.start_time) + " " + ga.fitness_function.elite.fitness + "\n");
 
 

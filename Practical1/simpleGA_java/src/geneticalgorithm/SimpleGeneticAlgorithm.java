@@ -53,7 +53,7 @@ public class SimpleGeneticAlgorithm {
         // L3: Evolutionary loop
         while (!CheckTerminationCondition(generation_limit, evaluations_limit, time_limit)) {
             
-            System.out.println("> Generation "+generation+" - best fitness found: "+fitness_function.elite.fitness);
+            // System.out.println("> Generation "+generation+" - best fitness found: "+fitness_function.elite.fitness);
             /*System.out.print("Individual: ");
             for (int j = 0; j < fitness_function.elite.genotype.length; j++) {
                 System.out.print(fitness_function.elite.genotype[j]+ " ");

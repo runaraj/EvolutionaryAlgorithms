@@ -2,14 +2,25 @@
 cd ../simpleGA_java/
 make
 # args: m k d n runs crossovertype
-run=1
+run=5
 populationSize=100
 crossoverTypes='Uniform Onepoint'
-for m in 1 2 4 8 16
+#remove old aggregate files at start
+
+FILEgotStuck=experiments/gotStuck.txt
+if [ -e "$FILEgotStuck" ]
+then 
+    rm experiments/gotStuck.txt
+    rm experiments/foundGlobalOptimum.txt
+fi
+
+k=5
+
+for populationSize in 10 100 500 1000
 do
-    for d in 0.2 0.8
+    for m in 1 2 4 8 16
     do
-        for k in 3 5 10
+        for d in 0.2 0.8
         do
             for type in $crossoverTypes
             do
@@ -18,3 +29,6 @@ do
         done
     done
 done
+
+
+java -classpath build/classes DataAggregator
