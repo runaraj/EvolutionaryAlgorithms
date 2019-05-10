@@ -1,9 +1,11 @@
 
 package geneticalgorithm;
 
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  *
@@ -19,6 +21,7 @@ public class SimpleGeneticAlgorithm {
     Selection selection;
 
     ArrayList<Individual> population;
+    HashMap<Integer, Integer> frequenciesOfOne;
 
     SimpleGeneticAlgorithm(int population_size, int m, int k, double d, CrossoverType crossover_type) {
         this.population_size = population_size;
@@ -31,6 +34,7 @@ public class SimpleGeneticAlgorithm {
         this.variation = new Variation(crossover_type);
         this.selection = new Selection();
         this.population = new ArrayList<Individual>();
+        frequenciesOfOne = new HashMap<>();
     }
 
     public void run(int generation_limit, long evaluations_limit, long time_limit) throws FitnessFunction.OptimumFoundCustomException, IOException {
@@ -52,8 +56,9 @@ public class SimpleGeneticAlgorithm {
 
         // L3: Evolutionary loop
         while (!CheckTerminationCondition(generation_limit, evaluations_limit, time_limit)) {
-            
-            // System.out.println("> Generation "+generation+" - best fitness found: "+fitness_function.elite.fitness);
+
+            frequenciesOfOne.clear();
+            System.out.println("> Generation "+generation+" - best fitness found: "+fitness_function.elite.fitness);
             /*System.out.print("Individual: ");
             for (int j = 0; j < fitness_function.elite.genotype.length; j++) {
                 System.out.print(fitness_function.elite.genotype[j]+ " ");
@@ -82,6 +87,21 @@ public class SimpleGeneticAlgorithm {
             // L3.6 (and follownig): selection
             population = selection.TournamentSelect(p_and_o);
 
+            for (Individual individual : population) {
+                int numberOfOnes = 0;
+                for (int i = 0; i < individual.genotype.length; i++){
+                    if (individual.genotype[i]==1){
+                        numberOfOnes +=1;
+                    }
+                }
+                if(frequenciesOfOne.containsKey(numberOfOnes)){
+                    int val = frequenciesOfOne.get(numberOfOnes);
+                    val +=1;
+                    frequenciesOfOne.replace(numberOfOnes,val);
+                }else{
+                    frequenciesOfOne.put(numberOfOnes,1);
+                }
+            }
             /*for (int i = 0; i < population.size();i++) {
                 System.out.println(population.get(i).toString());
             }*/
@@ -98,7 +118,6 @@ public class SimpleGeneticAlgorithm {
     private int[] prevElite = {1};
 
     private boolean CheckTerminationCondition(int generation_limit, long evaluations_limit, long time_limit) {
-
         if (generation_limit > 0 && generation >= generation_limit) {
             return true;
         }
@@ -108,6 +127,46 @@ public class SimpleGeneticAlgorithm {
         long elapsed_time = System.currentTimeMillis() - start_time;
         if (time_limit > 0 && elapsed_time >= time_limit) {
             return true;
+        }
+        //stop if 80 % of the population contains only 10% 1's
+        int limit1 = (int) Math.ceil(population_size*0.1);
+        int limit2 = (int) Math.floor(population_size*0.1);
+        if(limit1 == limit2){
+            if (frequenciesOfOne.containsKey(limit1)){
+                int individualsWith10Percent = frequenciesOfOne.get(limit1);
+                float fraction = individualsWith10Percent/population.size();
+                if(fraction>0.8){
+                    return true;
+                }
+            }
+
+        }
+
+        //stop if 80 % of the population contains only 10% 1's
+        if(limit1!=limit2){
+            if(frequenciesOfOne.containsKey(limit1)&&frequenciesOfOne.containsKey(limit2)){
+                int individualsWith10Percent = frequenciesOfOne.get(limit1);
+                int individualsWith10Percent2 = frequenciesOfOne.get(limit2);
+                float fraction = (individualsWith10Percent+individualsWith10Percent2)/population.size();
+                if(fraction>0.8){
+                    return true;
+                }
+            }
+        }
+        //check if all of the population is equal
+        int keyLength = frequenciesOfOne.keySet().size();
+        if (keyLength==1){
+            boolean allEqual = true;
+            for (int i = 0; i < population.size()-1; i++) {
+                for (int j = 0; j < genotype_length; j++){
+                    if(population.get(i).genotype[j]!=population.get(i+1).genotype[j]){
+                        allEqual = false;
+                    }
+                }
+            }
+            if(allEqual==true){
+                return true;
+            }
         }
         // If the elite is all 0 two times in a row we are stuck
         if (Arrays.stream(prevElite).sum() == 0){
