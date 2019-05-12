@@ -26,9 +26,6 @@ public class DataAggregator {
     String foundGlobalOptimum = "experiments/foundGlobalOptimum.txt";
     List<String> files = new ArrayList<>(Arrays.asList(gotStuck, foundGlobalOptimum));
 
-
-
-
     
     public void aggregateM() {
         int stuckCount = 0;
@@ -277,19 +274,6 @@ public class DataAggregator {
         
     }
 
-    public double getStandardDeviation(List<Integer> data){
-        int sum = 0;
-        for (Integer in: data) {
-            sum+=in;
-        }
-        double mean = sum/data.size();
-        double sumSquared = 0;
-        for (Integer in : data) {
-            sumSquared +=Math.pow(in-mean,2);
-        }
-        double std =Math.sqrt(sumSquared/data.size());
-        return std;
-    }
     
     public void aggregateType() {
 
@@ -371,6 +355,20 @@ public class DataAggregator {
             System.out.println();
         }
         
+    }
+
+    public double getStandardDeviation(List<Integer> data){
+        int sum = 0;
+        for (Integer in: data) {
+            sum+=in;
+        }
+        double mean = sum/data.size();
+        double sumSquared = 0;
+        for (Integer in : data) {
+            sumSquared +=Math.pow(in-mean,2);
+        }
+        double std =Math.sqrt(sumSquared/data.size());
+        return std;
     }
     public static void main(String[] args) throws IOException {
 
