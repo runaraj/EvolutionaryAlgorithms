@@ -182,6 +182,15 @@ public class DataAggregator {
 
         counters.get(0.8)[2] = evalSum/evaluationsList08.size();
         counters.get(0.8)[3] = genSum/generationsList08.size();
+
+        for(Double key: counters.keySet()){
+            System.out.println("D-value is equal to: " + key);
+            for(int i = 0; i<4; i++){
+                System.out.print(counters.get(key)[i]+" ");
+            }
+            System.out.println();
+        }
+
         return counters;
     }
 
@@ -369,15 +378,16 @@ public class DataAggregator {
         agg.aggregateM();
         agg.aggregatePop();
         agg.aggregateType();
-        Map<Double,int[]> dMap = agg.aggregateD();
-        System.out.println(dMap);
-        for(Double key: dMap.keySet()){
-            System.out.println("D-value is equal to: " + key);
-            for(int i = 0; i<4; i++){
-                System.out.print(dMap.get(key)[i]+" ");
-            }
-            System.out.println();
-        }
+        agg.aggregateD();
+        // Map<Double,int[]> dMap = agg.aggregateD();
+        // System.out.println(dMap);
+        // for(Double key: dMap.keySet()){
+        //     System.out.println("D-value is equal to: " + key);
+        //     for(int i = 0; i<4; i++){
+        //         System.out.print(dMap.get(key)[i]+" ");
+        //     }
+        //     System.out.println();
+        // }
         
     }
     

@@ -165,12 +165,6 @@ public class SimpleGeneticAlgorithm {
                 return true;
             }
         }
-        // If the elite is all 0 two times in a row we are stuck
-        if (Arrays.stream(prevElite).sum() == 0){
-            return true;
-        } else {
-            prevElite = fitness_function.elite.genotype;
-        }
         return false;
     }
 
