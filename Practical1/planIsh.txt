@@ -40,3 +40,5 @@ use tables for std.
 
 !!!! in all plots: when using #evaluations, this is the number of evaluations when finding
 	the optimal solution. All 1s.
+
+do some tests with k=3 (maybe k=10) to get some feel for what k affects??
