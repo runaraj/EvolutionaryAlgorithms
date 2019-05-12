@@ -26,8 +26,10 @@ public class DataAggregator {
     String foundGlobalOptimum = "experiments/foundGlobalOptimum.txt";
     List<String> files = new ArrayList<>(Arrays.asList(gotStuck, foundGlobalOptimum));
 
+    public static Map<Integer, int[]> mAggregates = new HashMap<>();
+
     
-    public void aggregateM() {
+    public Map<Integer, List<Integer>> aggregateM() {
         int stuckCount = 0;
         int foundGlobalCount = 0;
         List<Integer> evaluations = new ArrayList<>();
@@ -38,6 +40,8 @@ public class DataAggregator {
         // Key = value of m
         //int[] = [stuckCount, foundGlobalCount, evalTotal, genTotal]
         Map<Integer, int[]> counters = new HashMap<>();
+
+        Map<Integer, List<Integer>> allEvals = new HashMap<>();
 
         for (Integer m : mValues) {
             BufferedReader reader;
@@ -67,6 +71,7 @@ public class DataAggregator {
             } catch (Exception e) {
                 
             }
+            // Get data from gotStuck
             try {
                 reader = new BufferedReader(new FileReader(gotStuck));
                 String line = reader.readLine();
@@ -95,9 +100,12 @@ public class DataAggregator {
             counters.put(m, aggregate);
             stuckCount = 0;
             foundGlobalCount = 0;
+            allEvals.put(m, new ArrayList<>(evaluations));
             evaluations.clear();
             generations.clear();
         }
+
+        mAggregates = counters;
 
         System.out.println("Stuck count, Global count, eval avg, gen. avg");
         for (Integer key : counters.keySet()) {
@@ -107,11 +115,12 @@ public class DataAggregator {
             }
             System.out.println();
         }
+        return allEvals;
 
 
     }
 
-    public Map<Double,int[]> aggregateD() {
+    public Map<Double, List<Integer>> aggregateD() {
         List<Integer> evaluationsList02 = new ArrayList<>();
         List<Integer> generationsList02 = new ArrayList<>();
         List<Integer> evaluationsList08 = new ArrayList<>();
@@ -188,15 +197,22 @@ public class DataAggregator {
             System.out.println();
         }
 
-        return counters;
+        Map<Double, List<Integer>> allEvals = new HashMap<>();
+        allEvals.put(0.8, evaluationsList08);
+        allEvals.put(0.2, evaluationsList02);
+
+        // return counters;
+        return allEvals;
     }
 
     
-    public void aggregatePop() {
+    public Map<Integer, List<Integer>> aggregatePop() {
         int stuckCount = 0;
         int foundGlobalCount = 0;
         List<Integer> evaluations = new ArrayList<>();
         List<Integer> generations = new ArrayList<>();
+
+        Map<Integer, List<Integer>> allEvals = new HashMap<>();
 
         // int[] popValues = {50, 100, 200, 300, 400, 500};
         int[] popValues = {50, 100, 200, 300, 400, 500, 1000, 1500, 2000, 2500, 3000, 3500, 4000};
@@ -261,6 +277,9 @@ public class DataAggregator {
             counters.put(p, aggregate);
             stuckCount = 0;
             foundGlobalCount = 0;
+            allEvals.put(p, new ArrayList<>(evaluations));
+            evaluations.clear();
+            generations.clear();
         }
 
         System.out.println("Stuck count, Global count, eval avg, gen. avg");
@@ -271,11 +290,14 @@ public class DataAggregator {
             }
             System.out.println();
         }
+
+        return allEvals;
+        
         
     }
 
     
-    public void aggregateType() {
+    public Map<String, List<Integer>> aggregateType() {
 
         int stuckCount = 0;
         int foundGlobalCount = 0;
@@ -288,6 +310,8 @@ public class DataAggregator {
         // Key = value of m
         //int[] = [stuckCount, foundGlobalCount, evalTotal, genTotal]
         Map<String, int[]> counters = new HashMap<>();
+
+        Map<String, List<Integer>> allEvals = new HashMap<>();
 
         for (String t : typeValues) {
             BufferedReader reader;
@@ -344,6 +368,7 @@ public class DataAggregator {
             counters.put(t, aggregate);
             stuckCount = 0;
             foundGlobalCount = 0;
+            allEvals.put(t, new ArrayList<>(evaluations));
         }
 
         System.out.println("Stuck count, Global count, eval avg, gen. avg");
@@ -354,9 +379,14 @@ public class DataAggregator {
             }
             System.out.println();
         }
+
+        return allEvals;
         
     }
 
+
+    // @data = list of #evaluations or fitness.
+    // Returns the std of values in @data.
     public double getStandardDeviation(List<Integer> data){
         int sum = 0;
         for (Integer in: data) {
@@ -370,13 +400,113 @@ public class DataAggregator {
         double std =Math.sqrt(sumSquared/data.size());
         return std;
     }
+
+    public double getStandardDeviationDouble(List<Double> data){
+        double sum = 0;
+        for (Double in: data) {
+            sum+=in;
+        }
+        double mean = sum/data.size();
+        double sumSquared = 0;
+        for (Double in : data) {
+            sumSquared +=Math.pow(in-mean,2);
+        }
+        double std =Math.sqrt(sumSquared/data.size());
+        return std;
+    }
+
+    private double calcZvalue(int x, double mean, double std){
+        double out = (x-mean)/std;
+        return out;
+
+    }
+
+    private double calcMean(List<Integer> data) {
+        int sum = 0;
+        for (Integer in: data) {
+            sum+=in;
+        }
+        double mean = sum/data.size();
+        return mean;
+    }
+    private double calcMeanDouble(List<Double> data) {
+        double sum = 0.0;
+        for (Double in: data) {
+            sum+=in;
+        }
+        double mean = sum/data.size();
+        return mean;
+    }
+
+    // takes in an array of values and returns an array with their Z values
+    public List<Double> getZvalues(List<Integer> data) {
+        List<Double> out = new ArrayList<>();
+        double std = getStandardDeviation(data);
+        double mean = calcMean(data);
+
+        for (Integer x : data) {
+            double z = calcZvalue(x, mean, std);
+            out.add(z);
+        }
+        return out;
+        
+    }
+
     public static void main(String[] args) throws IOException {
 
         DataAggregator agg = new DataAggregator();
-        agg.aggregateM();
-        agg.aggregatePop();
-        agg.aggregateType();
-        agg.aggregateD();
+
+        // The following prints show that:
+        // The average number of evals increase with m
+        // The std also increases at the same time
+        // HOWEVER, for each value of m, the std of the resulting
+        //          number of evaluations is relatively equal
+        //          i.e. the Z-value has approx the same std
+        // agg.aggregateM();
+        Map<Integer, List<Integer>> res = agg.aggregateM();
+
+        // System.out.println(agg.getZvalues(res.get(4)));
+        /*
+        int set1 = 100;
+        int set2 = 200;
+        int set3 = 500;
+        int set4 = 1000;
+
+        System.out.println("Z-value std:");
+        System.out.println(agg.getStandardDeviationDouble(agg.getZvalues(res.get(set1))));
+        System.out.println(agg.getStandardDeviationDouble(agg.getZvalues(res.get(set2))));
+        System.out.println(agg.getStandardDeviationDouble(agg.getZvalues(res.get(set3))));
+        System.out.println(agg.getStandardDeviationDouble(agg.getZvalues(res.get(set4))));
+
+        System.out.println("Z-value mean:");
+        System.out.println(agg.calcMeanDouble(agg.getZvalues(res.get(set1))));
+        System.out.println(agg.calcMeanDouble(agg.getZvalues(res.get(set2))));
+        System.out.println(agg.calcMeanDouble(agg.getZvalues(res.get(set3))));
+        System.out.println(agg.calcMeanDouble(agg.getZvalues(res.get(set4))));
+
+        System.out.println("Standard Deviations:");
+        System.out.println(agg.getStandardDeviation(res.get(set1)));
+        System.out.println(agg.getStandardDeviation(res.get(set2)));    
+        System.out.println(agg.getStandardDeviation(res.get(set3)));
+        System.out.println(agg.getStandardDeviation(res.get(set4)));
+
+        System.out.println("MEANS:");
+        System.out.println(agg.calcMean(res.get(set1)));
+        System.out.println(agg.calcMean(res.get(set2)));
+        System.out.println(agg.calcMean(res.get(set3)));
+        System.out.println(agg.calcMean(res.get(set4)));
+
+        */
+        // System.out.println(res.get(16));
+        // System.out.println(agg.getStandardDeviation(res.get(16)));
+        System.out.println(mAggregates.get(8)[0]);
+        // Map<Integer, List<Integer>> resPop = agg.aggregatePop();
+        // System.out.println(resPop.get(100).size());
+        // Map<Double, List<Integer>> resD = agg.aggregateD();
+        // System.out.println(resD.get(0.2).size());
+        // Map<String, List<Integer>> resT = agg.aggregateType();
+        // System.out.println(resT.get("Uniform").size());
+        // System.out.println(agg.getStandardDeviation(resT.get("Uniform")));
         // Map<Double,int[]> dMap = agg.aggregateD();
         // System.out.println(dMap);
         // for(Double key: dMap.keySet()){
