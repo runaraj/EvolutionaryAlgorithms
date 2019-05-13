@@ -34,14 +34,12 @@ sol = [
 
 figure
 plot(pop, eval);
-title("Avg. Number of evaluations by population size");
 xlabel("Population size");
 ylabel("Number of evaluations");
 
 figure
 plot(pop, sol);
 hold on
-title("Number of optimal solutions found by population size");
 y = 400;
 x1 = 0;
 x2 = 4000;
