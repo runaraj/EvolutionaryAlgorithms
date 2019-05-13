@@ -57,18 +57,14 @@ public class DataAggregator {
                     int mVal = Integer.valueOf(linesplit[2].substring(1));
                     String tVal = linesplit[5].substring(1);
 
-                    if (m == mVal && (tVal.equals(variationType) || variationType.equals("all")) && (d==dVal || d==0)) {
+                    if (m == mVal && (tVal.equals(variationType) || variationType.equals("all")) && (d==dVal || dVal==0)) {
                         String[] evalGen = linesplit[6].split("-")[1].split(":");
                         int numEvals = Integer.valueOf(evalGen[0]);
                         int numGens = Integer.valueOf(evalGen[1]);
                         foundGlobalCount ++;
-                        // evaluationsTotal += numEvals;
                         evaluations.add(numEvals);
-                        // generationsTotal += numGens;
                         generations.add(numGens);
                     }
-
-
                     line = reader.readLine();
                 }
                 
@@ -80,12 +76,14 @@ public class DataAggregator {
             try {
                 reader = new BufferedReader(new FileReader(gotStuck));
                 String line = reader.readLine();
+                
                 while (line != null) {
                     String[] linesplit = line.split("_");
                     int mVal = Integer.valueOf(linesplit[2].substring(1));
+                    double d = Double.parseDouble(linesplit[4].substring(1,linesplit[4].length()));
                     String tVal = linesplit[5].substring(1);
 
-                    if (m == mVal && (tVal.equals(variationType) || variationType.equals("all"))) {
+                    if (m == mVal && (tVal.equals(variationType) || variationType.equals("all")) && (d==dVal || dVal==0)) {
                         stuckCount ++;
                     }
                     line = reader.readLine();
@@ -437,6 +435,23 @@ public class DataAggregator {
 
         DataAggregator agg = new DataAggregator();
 
+
+        // START - create data for population sizes 50 to 4000
+        //         Finds the average number of evaluations and
+        //              the number of solutions found for a 
+        //              given population size
+        // first run the script: 'runPop50to4000'
+        System.out.println("RESULTS FOR DIFFERENT POPULATION SIZES:");
+        Map<Integer, List<Integer>> resPop = agg.aggregatePop(0);
+        List<Integer> copPop = new ArrayList<Integer>(resPop.keySet());
+        Collections.sort(copPop);
+        for (Integer key : copPop) {
+            System.out.println("    Population size: " + key + " Avg. Number of Evals: " + popAggregates.get(key)[2] + " Number of solutions: " + popAggregates.get(key)[1]);
+        }
+        System.out.println("\n");
+        // END ---------------------------------------------------
+
+
         // The following prints show that:
         // The average number of evals increase with m
         // The std also increases at the same time
@@ -480,41 +495,32 @@ public class DataAggregator {
         for (Integer key : cop) {
             System.out.println("Population size: " + key + " Number of Evals: " + popAggregates.get(key)[2] + " Number of solutions: " + popAggregates.get(key)[1]);
         }
+        System.out.println();
 
 
-        // START - create data for population sizes 50 to 4000
-        //         Finds the average number of evaluations and
-        //              the number of solutions found for a 
-        //              given population size
-        // first run the script: 'runPop50to4000'
-        Map<Integer, List<Integer>> resPop = agg.aggregatePop(0);
-        List<Integer> copPop = new ArrayList<Integer>(resPop.keySet());
-        Collections.sort(copPop);
-        for (Integer key : copPop) {
-            // System.out.println("Population size: " + key + " Avg. Number of Evals: " + popAggregates.get(key)[2] + " Number of solutions: " + popAggregates.get(key)[1]);
-        }
-
-        // END ---------------------------------------------------
+        
 
 
 
-        // START - Results for different M values
+        // START - Results for different variation types
 
-        System.out.println("UNIFORM");
+        System.out.println("RESULTS FOR DIFFERENT VARIATION TYPES");
+        System.out.println("    UNIFORM");
         Map<Integer,List<Integer>> resMu = agg.aggregateM("Uniform", 0);
         List<Integer> copM = new ArrayList<Integer>(resMu.keySet());
         Collections.sort(copM);
         for (Integer key : copM) {
-            System.out.println("Population size: " + key + " Avg. Number of Evals: " + mAggregates.get(key)[2] + " Number of solutions found: " + mAggregates.get(key)[1] + " Number of instances: " + (mAggregates.get(key)[1]+mAggregates.get(key)[0]));
+            System.out.println("        M value: " + key + " Avg. Number of Evals: " + mAggregates.get(key)[2] + " Number of solutions found: " + mAggregates.get(key)[1] + " Number of instances: " + (mAggregates.get(key)[1]+mAggregates.get(key)[0]));
         }
 
-        System.out.println("ONEPOINT");
+        System.out.println("    ONEPOINT");
         Map<Integer,List<Integer>> resMop = agg.aggregateM("OnePoint", 0);
         List<Integer> copMop = new ArrayList<Integer>(resMop.keySet());
         Collections.sort(copMop);
         for (Integer key : copMop) {
-            System.out.println("Population size: " + key + " Avg. Number of Evals: " + mAggregates.get(key)[2] + " Number of solutions found: " + mAggregates.get(key)[1] + " Number of instances: " + (mAggregates.get(key)[1]+mAggregates.get(key)[0]));
+            System.out.println("        M value: " + key + " Avg. Number of Evals: " + mAggregates.get(key)[2] + " Number of solutions found: " + mAggregates.get(key)[1] + " Number of instances: " + (mAggregates.get(key)[1]+mAggregates.get(key)[0]));
         }
+        System.out.println("\n");
 
         // END ---------------------------------------------------
 

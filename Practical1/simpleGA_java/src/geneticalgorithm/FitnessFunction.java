@@ -85,6 +85,75 @@ public class FitnessFunction {
 
 
 
+    public static void main(String[] args) {
+
+        FitnessFunction f = new FitnessFunction(1, 5, 0.2);
+        Individual i1 = new Individual(5);
+        i1.genotype = new int[]{0,0,0,0,1};
+        Individual i2 = new Individual(5);
+        i2.genotype = new int[]{1,0,0,0,0};
+        Individual i3 = new Individual(5);
+        i3.genotype = new int[]{1,1,0,0,0};
+        Individual i4 = new Individual(5);
+        i4.genotype = new int[]{0,1,1,0,0};
+        Individual i5 = new Individual(5);
+        i5.genotype = new int[]{1,1,1,1,0};
+        Individual i6 = new Individual(5);
+        i6.genotype = new int[]{1,1,1,1,1};
+        try {
+            f.Evaluate(i1);
+            f.Evaluate(i2);
+            f.Evaluate(i3);
+            f.Evaluate(i4);
+            f.Evaluate(i5);
+            
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+        try {
+            f.Evaluate(i6);
+            
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+        
+        System.out.println(i1+ " " + i1.fitness);
+        System.out.println(i2+ " " + i2.fitness);    
+        System.out.println(i3+ " " + i3.fitness);
+        System.out.println(i4+ " " + i4.fitness);
+        System.out.println(i5+ " " + i5.fitness);
+        System.out.println(i6+ " " + i6.fitness);
+        System.out.println("\n");
+
+        f = new FitnessFunction(1, 5, 0.8);
+        try {
+            f.Evaluate(i1);
+            f.Evaluate(i2);
+            f.Evaluate(i3);
+            f.Evaluate(i4);
+            f.Evaluate(i5);
+            
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+        try {
+            f.Evaluate(i6);
+            
+        } catch (Exception e) {
+            //TODO: handle exception
+        }
+        
+        System.out.println(i1+ " " + i1.fitness);
+        System.out.println(i2+ " " + i2.fitness);    
+        System.out.println(i3+ " " + i3.fitness);
+        System.out.println(i4+ " " + i4.fitness);
+        System.out.println(i5+ " " + i5.fitness);
+        System.out.println(i6+ " " + i6.fitness);
+        
+    }
+
+
+
     
 
 }
