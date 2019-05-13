@@ -50,9 +50,10 @@ public class DataAggregator {
                 String line = reader.readLine();
                 while (line != null) {
                     String[] linesplit = line.split("_");
+                    double d = Double.parseDouble(linesplit[4].substring(1,linesplit[4].length()));
                     int mVal = Integer.valueOf(linesplit[2].substring(1));
 
-                    if (m == mVal) {
+                    if (m == mVal && d == 0.2) {
                         String[] evalGen = linesplit[6].split("-")[1].split(":");
                         int numEvals = Integer.valueOf(evalGen[0]);
                         int numGens = Integer.valueOf(evalGen[1]);
@@ -452,6 +453,9 @@ public class DataAggregator {
         
     }
 
+
+
+
     public static void main(String[] args) throws IOException {
 
         DataAggregator agg = new DataAggregator();
@@ -463,14 +467,41 @@ public class DataAggregator {
         //          number of evaluations is relatively equal
         //          i.e. the Z-value has approx the same std
         // agg.aggregateM();
-        Map<Integer, List<Integer>> res = agg.aggregateM();
+        //Map<Integer, List<Integer>> resPop = agg.aggregatePop();
+        Map<Double, List<Integer>>  resD =  agg.aggregateD();
+        for(Double key: resD.keySet()){
+                System.out.println("D-value is equal to: " + key);
+                 for(int i = 0; i<4; i++){
+                     System.out.print(resD.get(key).get(i)+" ");
+                }
+                System.out.println();
+        }
+
+        Map<Integer,List<Integer>> resM = agg.aggregateM();
+
+
+        System.out.println("Stuck count, Global count, eval avg, gen. avg");
+
+        for (Integer key : resM.keySet()) {
+
+            System.out.println(resM.get(key).get(3) + " ");
+        }
+            //System.out.println("M value: " + key);
+            /*
+            for (int i = 0; i < 4; i++) {
+                System.out.print(resM.get(key).get(i) + " ");
+            }
+            System.out.println();
+
+            /*
+        }
 
         // System.out.println(agg.getZvalues(res.get(4)));
         /*
-        int set1 = 100;
-        int set2 = 200;
-        int set3 = 500;
-        int set4 = 1000;
+        int set1 = 1;
+        int set2 = 4;
+        int set3 = 8;
+        int set4 = ;
 
         System.out.println("Z-value std:");
         System.out.println(agg.getStandardDeviationDouble(agg.getZvalues(res.get(set1))));
@@ -499,7 +530,7 @@ public class DataAggregator {
         */
         // System.out.println(res.get(16));
         // System.out.println(agg.getStandardDeviation(res.get(16)));
-        System.out.println(mAggregates.get(8)[0]);
+        //System.out.println(mAggregates.get(8)[0]);
         // Map<Integer, List<Integer>> resPop = agg.aggregatePop();
         // System.out.println(resPop.get(100).size());
         // Map<Double, List<Integer>> resD = agg.aggregateD();
