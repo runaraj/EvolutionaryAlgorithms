@@ -1,6 +1,7 @@
 Practical1/simpleGA_java/build/*
 Practical1/simpleGA_java/out/*
 Practical1/simpleGA_java/experiments/*
+Practical1/simpleGA_java/experiments*
 *.idea/
 *.project
 *.iml
