@@ -2,7 +2,7 @@
 cd ../simpleGA_java/
 make
 # args: m k d n runs crossovertype
-run=10
+run=20
 populationSize=100
 crossoverTypes='Uniform Onepoint'
 #remove old aggregate files at start
