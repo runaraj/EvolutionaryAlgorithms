@@ -16,7 +16,7 @@ then
 fi
 k=5
 
-for populationSize in 50 100 200 300 400 500 1000 1500 2000 2500 3000 3500 4000
+for populationSize in 50 100 200 300 400 500 1000
 do
     for m in 1 2 4 8 16
     do
