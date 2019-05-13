@@ -32,7 +32,7 @@ public class DataAggregator {
     public static Map<Double, int[]> dAggregates = new HashMap<>();
 
     
-    public Map<Integer, List<Integer>> aggregateM() {
+    public Map<Integer, List<Integer>> aggregateM(String variationType) {
         int stuckCount = 0;
         int foundGlobalCount = 0;
         List<Integer> evaluations = new ArrayList<>();
@@ -54,8 +54,9 @@ public class DataAggregator {
                 while (line != null) {
                     String[] linesplit = line.split("_");
                     int mVal = Integer.valueOf(linesplit[2].substring(1));
+                    String tVal = linesplit[5].substring(1);
 
-                    if (m == mVal) {
+                    if (m == mVal && (tVal.equals(variationType) || variationType.equals("all"))) {
                         String[] evalGen = linesplit[6].split("-")[1].split(":");
                         int numEvals = Integer.valueOf(evalGen[0]);
                         int numGens = Integer.valueOf(evalGen[1]);
@@ -81,8 +82,9 @@ public class DataAggregator {
                 while (line != null) {
                     String[] linesplit = line.split("_");
                     int mVal = Integer.valueOf(linesplit[2].substring(1));
+                    String tVal = linesplit[5].substring(1);
 
-                    if (m == mVal) {
+                    if (m == mVal && (tVal.equals(variationType) || variationType.equals("all"))) {
                         stuckCount ++;
                     }
                     line = reader.readLine();
@@ -110,13 +112,13 @@ public class DataAggregator {
 
         mAggregates = counters;
 
-        System.out.println("Stuck count, Global count, eval avg, gen. avg");
+        // System.out.println("Stuck count, Global count, eval avg, gen. avg");
         for (Integer key : counters.keySet()) {
-            System.out.println("M value: " + key);
+            // System.out.println("M value: " + key);
             for (int i = 0; i < 4; i++) {
-                System.out.print(counters.get(key)[i] + " ");
+                // System.out.print(counters.get(key)[i] + " ");
             }
-            System.out.println();
+            // System.out.println();
         }
         return allEvals;
 
@@ -381,13 +383,13 @@ public class DataAggregator {
         }
 
         typeAggregates = counters;
-        System.out.println("Stuck count, Global count, eval avg, gen. avg");
+        // System.out.println("Stuck count, Global count, eval avg, gen. avg");
         for (String key : counters.keySet()) {
-            System.out.println("Type value: " + key);
+            // System.out.println("Type value: " + key);
             for (int i = 0; i < 4; i++) {
-                System.out.print(counters.get(key)[i] + " ");
+                // System.out.print(counters.get(key)[i] + " ");
             }
-            System.out.println();
+            // System.out.println();
         }
 
         return allEvals;
@@ -435,11 +437,44 @@ public class DataAggregator {
         //              the number of solutions found for a 
         //              given population size
         // first run the script: 'runPop50to4000'
-        Map<Integer, List<Integer>> res = agg.aggregatePop();
-        List<Integer> cop = new ArrayList<Integer>(res.keySet());
+        Map<Integer, List<Integer>> resPop = agg.aggregatePop();
+        List<Integer> cop = new ArrayList<Integer>(resPop.keySet());
         Collections.sort(cop);
         for (Integer key : cop) {
-            System.out.println("Population size: " + key + " Number of Evals: " + popAggregates.get(key)[2] + " Number of solutions: " + popAggregates.get(key)[1]);
+            // System.out.println("Population size: " + key + " Avg. Number of Evals: " + popAggregates.get(key)[2] + " Number of solutions: " + popAggregates.get(key)[1]);
+        }
+
+        // END ---------------------------------------------------
+
+
+
+        // START - Results for different M values
+
+        System.out.println("UNIFORM");
+        Map<Integer,List<Integer>> resMu = agg.aggregateM("Uniform");
+        List<Integer> copM = new ArrayList<Integer>(resMu.keySet());
+        Collections.sort(copM);
+        for (Integer key : copM) {
+            System.out.println("Population size: " + key + " Avg. Number of Evals: " + mAggregates.get(key)[2] + " Number of solutions found: " + mAggregates.get(key)[1] + " Number of instances: " + (mAggregates.get(key)[1]+mAggregates.get(key)[0]));
+        }
+
+        System.out.println("ONEPOINT");
+        Map<Integer,List<Integer>> resMop = agg.aggregateM("OnePoint");
+        List<Integer> copMop = new ArrayList<Integer>(resMop.keySet());
+        Collections.sort(copMop);
+        for (Integer key : copMop) {
+            System.out.println("Population size: " + key + " Avg. Number of Evals: " + mAggregates.get(key)[2] + " Number of solutions found: " + mAggregates.get(key)[1] + " Number of instances: " + (mAggregates.get(key)[1]+mAggregates.get(key)[0]));
+        }
+
+        // END ---------------------------------------------------
+
+
+        // START - Results for different variation types
+
+        Map<String,List<Integer>> resType = agg.aggregateType();
+        List<String> copT = new ArrayList<String>(resType.keySet());
+        for (String key : copT) {
+            // System.out.println("Population size: " + key + " Avg. Number of Evals: " + typeAggregates.get(key)[2] + " Number of solutions found: " + typeAggregates.get(key)[1] + " Number of instances: " + (typeAggregates.get(key)[1]+typeAggregates.get(key)[0]));
         }
 
         // END ---------------------------------------------------
