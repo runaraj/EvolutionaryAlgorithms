@@ -79,6 +79,7 @@ public class DataAggregator {
                 
                 while (line != null) {
                     String[] linesplit = line.split("_");
+                    double d = Double.parseDouble(linesplit[4].substring(1,linesplit[4].length()));
                     int mVal = Integer.valueOf(linesplit[2].substring(1));
                     double d = Double.parseDouble(linesplit[4].substring(1,linesplit[4].length()));
                     String tVal = linesplit[5].substring(1);
@@ -261,8 +262,8 @@ public class DataAggregator {
                 while (line != null) {
                     String[] linesplit = line.split("_");
                     int pVal = Integer.valueOf(linesplit[1].substring(1));
-
-                    if (p == pVal) {
+                    double d = Double.parseDouble(linesplit[4].substring(1,linesplit[4].length()));
+                    if (p == pVal && (dVal==d || d ==0)) {
                         stuckCount ++;
                     }
                     line = reader.readLine();
@@ -462,33 +463,48 @@ public class DataAggregator {
         //Map<Integer, List<Integer>> resPop = agg.aggregatePop();
 
         // START
-        // The following code find evals by m, when d value equals to 0.2
-        // Map<Integer,List<Integer>> resM = agg.aggregateM(0.2);
-        // for (Integer key : resM.keySet()) {
-        //     System.out.println("M value :" + key + " Number of Evals: " resM.get(key).get(3) + " ");
-        // }
-        // END --------------------------------------------
+        /*
+        The following code find evals by m for the different d values
+        System.out.println("RESULTS FOR DIFFERENT D VALUES");
+        Map<Integer,List<Integer>> resMu = agg.aggregateM("all", 0.2);
+        List<Integer> copM = new ArrayList<Integer>(resMu.keySet());
+        Collections.sort(copM);
+        System.out.println("D = 0.2");
+        for (Integer key : copM) {
+            System.out.println("    Population size: " + key + " Avg. Number of Evals: " + mAggregates.get(key)[2] + " Number of solutions found: " + mAggregates.get(key)[1] + " Number of instances: " + (mAggregates.get(key)[1]+mAggregates.get(key)[0]));
+        }
 
-        // START
-        // The following code find evals by m, when d value equals to 0.8
-        // Map<Integer,List<Integer>> resM = agg.aggregateM(0.2);
-        // for (Integer key : resM.keySet()) {
-        //     System.out.println("M value :" + key + " Number of Evals: " + resM.get(key).get(3) + " ");
-        // }
+        System.out.println("D = 0.8");
+        resMu = agg.aggregateM("all", 0.8);
+        copM = new ArrayList<Integer>(resMu.keySet());
+        Collections.sort(copM);
+        for (Integer key : copM) {
+            System.out.println("    Population size: " + key + " Avg. Number of Evals: " + mAggregates.get(key)[2] + " Number of solutions found: " + mAggregates.get(key)[1] + " Number of instances: " + (mAggregates.get(key)[1]+mAggregates.get(key)[0]));
+        }
         // END --------------------------------------------
 
         /*
-        The following code find evals by population size when d = 0.2
-
+        The following code find evals by population size for different d values
+        System.out.println("RESULTS FOR DIFFERENT D VALUES");
+        Map<Integer, List<Integer>> res = agg.aggregatePop(0.2);
+        List<Integer> cop = new ArrayList<Integer>(res.keySet());
+        Collections.sort(cop);
+        System.out.println("D = 0.2");
+        for (Integer key : cop) {
+            System.out.println("    Population size: " + key + " Number of Evals: " + popAggregates.get(key)[2] + " Number of solutions: " + popAggregates.get(key)[1] + " Number of instances: " + (popAggregates.get(key)[1]+popAggregates.get(key)[0]));
+        }
+        System.out.println("D = 0.8");
+        res = agg.aggregatePop(0.8);
+        cop = new ArrayList<Integer>(res.keySet());
+        Collections.sort(cop);
+        for (Integer key : cop) {
+            System.out.println("    Population size: " + key + " Number of Evals: " + popAggregates.get(key)[2] + " Number of solutions: " + popAggregates.get(key)[1] + " Number of instances: " + (popAggregates.get(key)[1]+popAggregates.get(key)[0]));
+        }
 
          */
+
 
         /*
-        The following code find evals by population size when d = 0.2
-
-
-         */
-
         Map<Integer, List<Integer>> res = agg.aggregatePop(0.2);
         List<Integer> cop = new ArrayList<Integer>(res.keySet());
         Collections.sort(cop);
@@ -497,15 +513,33 @@ public class DataAggregator {
         }
         System.out.println();
 
-
-        
-
-
-
         // START - Results for different variation types
 
         System.out.println("RESULTS FOR DIFFERENT VARIATION TYPES");
         System.out.println("    UNIFORM");
+        }*/
+
+
+        // START - create data for population sizes 50 to 4000
+        //         Finds the average number of evaluations and
+        //              the number of solutions found for a 
+        //              given population size
+        // first run the script: 'runPop50to4000'
+        /*
+        Map<Integer, List<Integer>> resPop = agg.aggregatePop(0);
+        List<Integer> copPop = new ArrayList<Integer>(resPop.keySet());
+        Collections.sort(copPop);
+        for (Integer key : copPop) {
+            System.out.println("Population size: " + key + " Avg. Number of Evals: " + popAggregates.get(key)[2] + " Number of solutions: " + popAggregates.get(key)[1]);
+        }
+        */
+        // END ---------------------------------------------------
+
+
+
+        // START - Results for different M values
+        /*
+        System.out.println("UNIFORM");
         Map<Integer,List<Integer>> resMu = agg.aggregateM("Uniform", 0);
         List<Integer> copM = new ArrayList<Integer>(resMu.keySet());
         Collections.sort(copM);
@@ -526,13 +560,13 @@ public class DataAggregator {
 
 
         // START - Results for different variation types
-
+        /*
         Map<String,List<Integer>> resType = agg.aggregateType();
         List<String> copT = new ArrayList<String>(resType.keySet());
         for (String key : copT) {
             // System.out.println("Population size: " + key + " Avg. Number of Evals: " + typeAggregates.get(key)[2] + " Number of solutions found: " + typeAggregates.get(key)[1] + " Number of instances: " + (typeAggregates.get(key)[1]+typeAggregates.get(key)[0]));
         }
-
+        */
         // END ---------------------------------------------------
 
 
