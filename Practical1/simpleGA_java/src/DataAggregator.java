@@ -262,7 +262,7 @@ public class DataAggregator {
                     String[] linesplit = line.split("_");
                     int pVal = Integer.valueOf(linesplit[1].substring(1));
                     double d = Double.parseDouble(linesplit[4].substring(1,linesplit[4].length()));
-                    if (p == pVal && (dVal==d || d ==0)) {
+                    if (p == pVal && (dVal==d || dVal ==0)) {
                         stuckCount ++;
                     }
                     line = reader.readLine();
@@ -444,9 +444,10 @@ public class DataAggregator {
         System.out.println("RESULTS FOR DIFFERENT POPULATION SIZES:");
         Map<Integer, List<Integer>> resPop = agg.aggregatePop(0);
         List<Integer> copPop = new ArrayList<Integer>(resPop.keySet());
+        System.out.println(popAggregates.get(50)[0]);
         Collections.sort(copPop);
         for (Integer key : copPop) {
-            System.out.println("    Population size: " + key + " Avg. Number of Evals: " + popAggregates.get(key)[2] + " Number of solutions: " + popAggregates.get(key)[1]);
+            System.out.println("    Population size: " + key + " Avg. Number of Evals: " + popAggregates.get(key)[2] + " Number of solutions: " + popAggregates.get(key)[1] + " Number of instances: " + (popAggregates.get(key)[1]+popAggregates.get(key)[0]));
         }
         System.out.println("\n");
         // END ---------------------------------------------------
