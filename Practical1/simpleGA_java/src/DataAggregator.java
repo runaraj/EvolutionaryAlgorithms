@@ -81,7 +81,6 @@ public class DataAggregator {
                     String[] linesplit = line.split("_");
                     double d = Double.parseDouble(linesplit[4].substring(1,linesplit[4].length()));
                     int mVal = Integer.valueOf(linesplit[2].substring(1));
-                    double d = Double.parseDouble(linesplit[4].substring(1,linesplit[4].length()));
                     String tVal = linesplit[5].substring(1);
 
                     if (m == mVal && (tVal.equals(variationType) || variationType.equals("all")) && (d==dVal || dVal==0)) {
